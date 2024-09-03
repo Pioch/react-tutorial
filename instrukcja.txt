@@ -34,5 +34,67 @@
 - By wyświetlić tablice w elementach html należy je zmapować:  {items.map((item) => (<li key={item} className="list-group-item">{item}</li>))}
 - Każdy element html powinien mieć unikalny key
 - warunek przy zwracaniu: { items.length == 0 ? <p>Brak</p> : null} lub {items.length == 0 && <p>Brak</p>}
+- zdarzenia: {items.map((item, index) => (<li key={item} className="list-group-item" onClick={(event) => {console.log(item, index)}}>{item}</li>))}
 
-Czas: 38:37
+Biblioteka do zdarzeń:
+- import { MouseEvent } from "react";
+- np. :
+  const handlerClick = (event: MouseEvent) => {
+    console.log(event);
+  }
+
+  {items.map((item, index) => (<li key={item} className="list-group-item" onClick={handleClick}>{item}</li>))}
+
+  warunki przy klasach html:
+  - {items.map((item, index) => (<li key={item} className={ selectedIndex === index ? 'list-group-item active' : 'list-group-item' } onClick={handleClick}>{item}</li>))}
+
+  Hooks -> dla zmieniających się obiektów
+  import { useState } from "react";
+
+  const [selectedIndex, setSelectedIndex] = useState(-1); //[index, funkcja aktualizująca]
+  {items.map((item, index) => (
+    <li 
+      key={item} 
+      className={ selectedIndex === index ? 'list-group-item active' : 'list-group-item' } 
+      onClick={() => { setSelectedIndex(index); }}>
+      {item}
+    </li>
+  ))}
+
+7. Przesyłanie danych do komponentów (Interfaces)
+
+interface Props {
+  items: string[];
+  heading: string;
+}
+
+function ListGroup({ items, heading }: Props) {
+    return (
+    <>
+      <h1>{heading}</h1>
+      {/*getMessage()*/}
+      {items.length == 0 && <p>Brak</p>}
+      <ul className="list-group">
+        {items.map((item, index) => (
+          <li 
+            key={item} 
+            className={ selectedIndex === index ? 'list-group-item active' : 'list-group-item' } 
+            onClick={() => { setSelectedIndex(index); }}>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+w App.tsx trzeba parametry dodać
+function App() {
+  let items = [
+    'Kot', 'Pies', 'Kaczka', 'Krowa', 'Kurczak'
+  ];
+
+  return <div><ListGroup items={items} heading="Zwierzęta"></ListGroup></div>;
+}
+
+Czas: 54:45
