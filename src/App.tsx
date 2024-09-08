@@ -1,11 +1,17 @@
-import ListGroup from "./components/ListGropu";
+import Alert from "./components/Alert";
+import ButtonAlert from "./components/ButtonAlert";
+import { useState } from "react";
 
 function App() {
-  let items = [
-    'Kot', 'Pies', 'Kaczka', 'Krowa', 'Kurczak'
-  ];
+  const [alertVisible, setAlertVisibility] = useState(false);
 
-  return <div><ListGroup items={items} heading="Zwierzęta"></ListGroup></div>;
+  return (
+    <div>
+      { alertVisible && <Alert onClose={() => setAlertVisibility(false)}>text</Alert>}
+      <ButtonAlert onClickItem={() => setAlertVisibility(true)}>Nazwa</ButtonAlert>
+    </div>
+   
+  )
 }
 
 export default App;

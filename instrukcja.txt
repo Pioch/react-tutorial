@@ -97,4 +97,57 @@ function App() {
   return <div><ListGroup items={items} heading="Zwierzęta"></ListGroup></div>;
 }
 
-Czas: 54:45
+8. Dodawanie funkcji do interface
+interface Props {
+  items: string[];
+  heading: string;
+  onSelectItem: (item: string) => void; //funkcja
+}
+
+funkcję należy dopisać w parametrach funkcji komponentu: function ListGroup({ items, heading, onSelectItem }: Props
+W App.tsx dopisać funkcję przy zwracaniu komponentu: 
+
+const handleSelectItem = (item: string) => {
+    console.log(item);
+}
+
+return <div><ListGroup items={items} heading="Zwierzęta" onSelectItem={handleSelectItem}></ListGroup></div>;
+
+9. Stany i argumenty.
+Argumenty (props): dane wejściowe przekazywane do komponentów (podobne do argumentów funkcji), są niezmienne 
+Stany (state): dane zarządzane przez komponent (podobne do lokalnych zmiennych), są zmienne 
+
+10. Przekazywanie dzieci do komponentów (przekazywanie html).
+Przy tworzeniu komponentów (po zainstalowaniu extensiona ES7 + /React-Native snippets)
+wpisanie w pliku: rafce -> tworzy strukture komponentu
+
+import { ReactNode } from "react";
+
+interface Props {
+  children: ReactNode; -> typ zmiennej, która jest znacznikiem html
+} 
+
+w App.tsx:
+  <Alert>
+    <p>Jakiś teskt</p> -> children
+  </Alert>
+
+11. React dev tools do Chrome.
+W konsoli będzie dodatkowo do wyboru Components i Profiler
+Components -> wyświetla drzewo komponentów wraz z ich parametrami
+
+12. Opcjonalna wartość i definiowanie możliwych wartości
+interface Props {
+  children: string;
+  color?: 'primary' | 'secondary' | 'success'; -> jak nie jest przekazana do komponentu lub w App to bierze domyślną, jak jest wpisana inna niż zdefiniowana to wyświetla błąd
+  onClickItem: (nazwa: string) => void;
+}
+
+13. Stan początkowy i aktualny komponentu.
+W App.tsx:
+
+import { useState } from "react";
+const [alertVisible, setAlertVisibility] = useState(false); <- stan początkowy false
+- alertVisible <- aktualny stan
+- setAlertVisibility <- funkcja do zmiany stanu
+
