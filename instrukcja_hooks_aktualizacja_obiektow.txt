@@ -1,0 +1,99 @@
+1. Hooks
+ const [isVisible, setVisibility] = useState(false);
+
+  let count = 0;
+  const handleClick = () => {
+    setVisibility(true);
+    count++;
+    console.log(count);
+  }
+
+- aktualizują się asynchronicznie
+- zadeklarowanie zmiennej (count = 0) nie wyzeruje tej zmiennej po wywołaniu funkcji tak długo jak jest widoczny element
+- nie można używać hooków w if lub pętlach, mągą byc zadeklarowane tylko na początku funkcji komponentu
+- nie łączyć zmiennych z dwóch hooków do lokalnej zmiennej: const fullName = firstName + ' ' + lastName; <- nie używać czegos takiego
+- utworzyć grupę z zależnych zmiennych:
+
+const [person, setPerson] = useState({
+    firstName: '',
+    lastName: ''
+});
+- nie używać obiektów w obiekcie
+
+2. Pure i impure components.
+- nie używać (za każdym razem komponent zwróci inną wartość):
+
+let count = 0;
+const Message = () => {
+  count++;
+  return (
+    <div>Message {count}</div>
+  )
+}
+- zamiast tego zadeklarować let count = 0 wewnątrz funkcji
+- w main.tsx komponent <StrictMode> renderuje każy komponent dwa razy i wyświetla drugie wywołanie
+- na produkcji renderuje tylko raz
+
+3. Modyfikowanie obiektów.
+- nie modyfikuje się parametrów obiektu bezpośrednio tylko tworzy się nowy obiekt:
+
+  const [drink, setDrink] = useState({
+    title: 'Americano',
+    price: 5
+  });
+
+  const handleClick = () => {
+    //Nie modyfikuje się właściwości powyższego obiektu
+    //drink.price = 6;
+    //setDrink(drink);
+
+     const newDrink = {
+      ...drink, //kopiuje wszystkie właściwości obiektu
+      price: 6
+    }
+    setDrink(newDrink); lub setDrink({...drink, price: 6});
+  }
+
+4. Modyfikowanie zagnieżdżonych obiektów.
+-kopiuje się cały wewnętrzy obiekt i zmienia jego włąsciwość
+const [customer, setCustomer] = useState({
+  name: 'John',
+  address: {
+    city: 'Miasto',
+    zipCode: '12-000'
+  }
+});
+
+setCustomer({
+  ...customer, 
+  address: {...customer.address, zipCode: '45-987'}
+});
+
+5. Aktualizacja tablic.
+- dodanie elementu:
+const [tags, setTags] = useState(['happy', 'sad']);
+setTags([...tags, 'exciting'])
+  
+- usunięcie elementu:
+setTags(tags.filter(tag => tag != 'sad'));
+
+-aktualizacja elementu:
+setTags(tags.map(tag => tag == 'happy' ? 'happiness' : tag));
+
+6. Modyfikowanie tablicy obiektów.
+const [bugs, setBugs] = useState([
+    {id: 1, title: 'Bug 1', fixed: false},
+    {id: 2, title: 'Bug 2', fixed: false}
+  ])
+ 
+  const handleClick = () => {
+    setBugs(bugs.map(bug => bug.id == 1 ? {...bug, fixed: true} : bug))
+  }
+
+- Uzywanie biblioteki immer do aktualizacji obiektów:
+ import { produce } from 'immer';
+ 
+ setBugs(produce(draft => { //draft to obiekt przenoszący zmiany do obiektów
+      const bug = draft.find(bug => bug.id == 1);
+      if (bug) bug.title = 'Nowy Bug 1';
+    }));

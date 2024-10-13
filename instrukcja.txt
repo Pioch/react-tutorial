@@ -27,10 +27,11 @@
 - w main.tsx zaimportowanie ich
 
 6. Zwracanie kodu Html.
+
 - class zamienić na className (<li className="list-group-item">An item</li>) 
 - komponent nie może zwracać więcej niż jeden element
 - View -> Command Palette -> wrap with Abbreviation-> nazwa elementu w jaki ma być zapakowany zaznaczony kod 
-(import { Fragment } from "react/jsx-runtime"; i zapakować w Fragment nie div) lub <> bez importowania
+- import { Fragment } from "react/jsx-runtime"; i zapakować w Fragment nie div lub <> bez importowania
 - By wyświetlić tablice w elementach html należy je zmapować:  {items.map((item) => (<li key={item} className="list-group-item">{item}</li>))}
 - Każdy element html powinien mieć unikalny key
 - warunek przy zwracaniu: { items.length == 0 ? <p>Brak</p> : null} lub {items.length == 0 && <p>Brak</p>}
@@ -150,4 +151,5 @@ import { useState } from "react";
 const [alertVisible, setAlertVisibility] = useState(false); <- stan początkowy false
 - alertVisible <- aktualny stan
 - setAlertVisibility <- funkcja do zmiany stanu
+
 
